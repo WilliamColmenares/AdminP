@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block custom_head %}
+<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">
+{% endblock custom_head %}
+
+{% block content %}
+
+{% if messages %}
+
+<div id= "message" class="message">
+  <div id="animated-example" class="animated fadeOut">
+    {% for message in messages %}
+    <p id="alerta"{% if message.tags == 'warning' %} class="alert alert-warning" {% elif message.tags == 'success' %} class="alert alert-success" {% elif message.tags == 'error' %} class="alert alert-danger"  {% endif %}>{{ message }}</p>
+    {% endfor %}
+  </div>  
+</div>
+{% endif %}
+
+<div class="form-login">
+  <form method='POST'>{% csrf_token %}
+    <div class="text-center mb-4">
+      <img class="mb-4" src="{% static 'img/logopnb.jpg' %}" alt="" width="85" height="90">
+      <h1 class="h3 mb-3 font-weight-normal">Fuerzas de Acciones Especiales PNB</h1>
+      <h2>Operaciones</h2>
+    </div>
+    <div class="form-label-group">
+      {{ form.Credencial }}
+      <label for="username">Credencial</label>
+    </div>
+
+    <div class="form-label-group">
+      {{ form.Contraseña }}
+      <label for="inputPassword">Contraseña</label>
+    </div>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
+    <p class="mt-5 mb-3 text-muted text-center">&copy; 2018</p>
+  </form>
+</div>
+
+<style>
+#message
+{
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mb-4{
+  margin-bottom: 16px;
+}
+.alerta
+{
+  margin: 0 auto;
+}
+.animated
+{
+  -webkit-animation-duration: 4.8s;animation-duration: 4.8s;
+  -webkit-animation-fill-mode: both;animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeOut {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+@keyframes fadeOut {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+.fadeOut {
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
+}
+
+</style>
+{% endblock %}
+

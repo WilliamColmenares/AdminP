@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block custom_head %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap4.css" />
+<link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+{% endblock custom_head %}
+\
+
+
+{% block title %}
+<title>FAES Sistema de Control</title>
+{% endblock title %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+  <li class="mr-1 ml-4" style="list-style-type: none;">
+    <button class="btn btn-outline-secondary btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+      <i class="fas fa-bars fa-lg"></i>
+    </button>
+    <a class="logonav ml-3" href="#"><img width="39px" height="40px"src="{% static "img/logonav.png"%}" style="position:relative;"></a>
+    <li style="list-style-type: none;">
+      <a class="navbar-brand auto d-block d-sm-none d-md-none d-lg-none d-xl-none" href="#">PNB</a>
+    </li>
+    <li style="list-style-type: none;">
+      <a class="navbar-brand d-none d-sm-block" href="#">Policia Nacional Bolivariana</a>  
+    </li>  
+  </li>
+  
+
+  <!-- Navbar -->
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a class="btn btn-danger d-none d-sm-block" href="{% url 'logout' %}">Cerrar Sesión  <i class="fas fa-sign-out-alt"></i></a>
+      <a class="btn btn-danger d-block d-sm-none" href="{% url 'logout' %}">Salir  <i class="fas fa-sign-out-alt"></i></a>
+    </li>
+  </ul>
+
+</nav>
+
+<div id="wrapper">
+
+  <!-- Sidebar -->
+  <ul class="sidebar navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="#">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Inicio</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+      <i class="fas fa-fw fa-chart-area"></i>
+      <span>Gráficos</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+      <i class="far fa-file"></i>
+      <span>Actas Policiales</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+      <i class="fas fa-fw fa-table"></i>
+      <span>Minutas del Dia</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span> Bandas Criminales</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" data-toggle="modal" data-target="#modalBusq">
+      <i class="fas fa-search"></i>
+      <span>Búsqueda en Registros</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+      <i class="fab fa-searchengin"></i>
+      <span>Búsqueda de Acta</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+      <i class="fas fa-cogs"></i>
+      <span> Ajustes de Usuario</span></a>
+    </li>
+  </ul>
+
+  <div id="content-wrapper" class="pb-0">
+
+    <div class="container-fluid">
+
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Inicio</a>
+        </li>
+        <li class="breadcrumb-item active">Resumen</li>
+      </ol>
+
+      <!-- Icon Cards-->
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-3">
+          <div class="card text-white bg-primary o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fas fa-fw fa-comments"></i>
+              </div>
+              <div class="mr-5">2 Mensajes nuevos</div>
+            </div>
+            <a class="card-footer text-white clearfix small z-1" data-toggle="modal" data-target="#logoutModal" href="">
+              <span class="float-left">Abrir buzón de entrada</span>
+              <span class="float-right">
+                <i class="fas fa-angle-right"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+          <div class="card text-white bg-warning o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fas fa-fw fa-list"></i>
+              </div>
+              <div class="mr-5">2 Nuevas denuncias</div>
+            </div>
+            <a class="card-footer text-white clearfix small z-1" data-toggle="modal" data-target="#logoutModal" href="">
+              <span class="float-left">Ver detalles</span>
+              <span class="float-right">
+                <i class="fas fa-angle-right"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+          <div class="card text-white bg-success o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fas fa-file-alt"></i>
+              </div>
+              <div class="mr-5">Actuaciones Policiales</div>
+            </div>
+            <a class="card-footer text-white clearfix small z-1" data-toggle="modal" data-target="#myModal" href="">
+              <span class="float-left">Añadir acta</span>
+              <span class="float-right">
+                <i class="fas fa-angle-right"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+          <div class="card text-white bg-danger o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="mr-5">1 Investigación asignada</div>
+            </div>
+            <a class="card-footer text-white clearfix small z-1" data-toggle="modal" data-target="#logoutModal" href="">
+              <span class="float-left">Ver detalles</span>
+              <span class="float-right">
+                <i class="fas fa-angle-right"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Area Chart Example-->
+      <div class="card mb-1">
+        <div class="card-header">
+          <i class="fas fa-chart-area"></i>
+          Procedimientos por mes</div>
+        <div class="card-body">
+          <canvas id="myAreaChart" width="100%" height="30"></canvas>
+        </div>
+      </div>
+
+    <!-- /.container-fluid -->
+    </div>
+  <!-- /.content-wrapper -->
+  </div>
+    <!-- /#wrapper -->
+</div>
+
+
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Ingrese los datos de su Actuación Policial</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Formulario procesamiento Acta.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="modalBusq" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Ingrese nombres o digitos de cédula de identidad o pasaporte</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Formulario para búsqueda</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="logoutModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Próximamente</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>En desarrollo...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Page level plugin JavaScript-->
+<script src="{% static 'js/Chart.min.js' %}"></script>
+<script src="vendor/datatables/jquery.dataTables.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'js/sb-admin.min.js' %}"></script>
+
+<!-- Demo scripts for this page-->
+<script src="js/demo/datatables-demo.js"></script>
+<script src="{% static 'js/chart-area-demo.js' %}"></script>
+
+
+{% endblock %}
